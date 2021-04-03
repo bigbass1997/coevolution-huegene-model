@@ -21,6 +21,7 @@ const HMO: usize = HEIGHT - 1;
 
 fn main() {
     let mut sim = simulation::new(WIDTH, HEIGHT);
+    //let mut buffer: Vec<u32> = vec![0; WIDTH * HEIGHT];
     let mut buffer: [u32; WIDTH * HEIGHT] = [0; WIDTH * HEIGHT];
     let mut window = Window::new("Test", WIDTH, HEIGHT, WindowOptions::default()).unwrap_or_else(|e| { panic!("{}", e); });
     //let mut encoder = gif::new();
@@ -85,7 +86,13 @@ fn update(sim: &mut Simulation, buf: &mut [u32], rng: &mut oorandom::Rand32, run
             PLANT => {
                 count_plant += 1;
                 if c.val < simulation::MAX_ENERGY {
-                    c.val += 20.0 * (1.0 - c.color.to_hue());
+                    c.val += (rng.rand_float() * 2.0) * (5.0 - c.color.to_hue()).log2().abs();
+                    if c.color.g > 0.5 {
+                        c.val *= 1.1;
+                    }
+                    if c.color.r > 0.7 {
+                        c.val *= 0.8;
+                    }
                 }
                 if c.val >= simulation::MAX_ENERGY {
                     let dir = rng.rand_range(0..4);

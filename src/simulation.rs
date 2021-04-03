@@ -74,7 +74,7 @@ impl Simulation {
         let size = 1024;
         let center = (size * size / 2) + (size / 2);
         self.grid[center].kind = Kind::PLANT;
-        self.grid[center].color.set(0.6, 0.0, 0.3);
+        self.grid[center].color.set(0.4, 0.05, 0.6);
         self.living_positions.push(center);
         self.count_plant = 1;
     }

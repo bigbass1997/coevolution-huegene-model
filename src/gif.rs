@@ -18,3 +18,20 @@ pub(crate) fn png_encoder() -> PngEncoder<File> {
     let file = File::create(format!("gifs/{}.png", dt)).unwrap();
     PngEncoder::new_with_quality(file, CompressionType::Fast, FilterType::NoFilter)
 }
+
+pub struct PngSequencer {
+    pub directory: String,
+    count: u16,
+}
+/*impl PngSequencer {
+    pub fn new() -> Self {
+    let dt = Utc::now().format("%Y-%m-%d_%H-%M-%S").to_string();
+        std::fs::DirBuilder::new().recursive(true).create(format!("gifs-raw/{}/", dt)).unwrap();
+        
+        
+    }
+}
+
+pub fn png_sequencer() -> PngSequencer {
+    
+}*/
