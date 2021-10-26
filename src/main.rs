@@ -12,7 +12,6 @@ use minifb::{Key, Window, WindowOptions, clamp, KeyRepeat};
 use std::time::{Instant};
 use std::mem::swap;
 use image::{Frame, RgbaImage, ImageBuffer, Rgba, ImageEncoder, ColorType};
-use image::buffer::PixelsMut;
 
 const WIDTH: usize = 1024;
 const HEIGHT: usize = 1024;
@@ -23,9 +22,9 @@ fn main() {
     let mut sim = simulation::new(WIDTH, HEIGHT);
     //let mut buffer: Vec<u32> = vec![0; WIDTH * HEIGHT];
     let mut buffer: [u32; WIDTH * HEIGHT] = [0; WIDTH * HEIGHT];
-    let mut window = Window::new("Test", WIDTH, HEIGHT, WindowOptions::default()).unwrap_or_else(|e| { panic!("{}", e); });
+    let mut window = Window::new("Coevolution Huegene Model", WIDTH, HEIGHT, WindowOptions::default()).unwrap_or_else(|e| { panic!("{}", e); });
     //let mut encoder = gif::new();
-    let mut gif_frames = Vec::<Frame>::new();
+    //let mut gif_frames = Vec::<Frame>::new();
     
     let mut rng = oorandom::Rand32::new(6);
     
@@ -71,7 +70,6 @@ fn main() {
 }
 
 fn update(sim: &mut Simulation, buf: &mut [u32], rng: &mut oorandom::Rand32, run_decay: bool) {
-    let grid_len = sim.grid.len();
     let mut count_plant = 0u64;
     let positions = sim.living_positions.clone();
     
@@ -87,12 +85,7 @@ fn update(sim: &mut Simulation, buf: &mut [u32], rng: &mut oorandom::Rand32, run
                 count_plant += 1;
                 if c.val < simulation::MAX_ENERGY {
                     c.val += (rng.rand_float() * 2.0) * (5.0 - c.color.to_hue()).log2().abs();
-                    if c.color.g > 0.5 {
-                        c.val *= 1.1;
-                    }
-                    if c.color.r > 0.7 {
-                        c.val *= 0.8;
-                    }
+                    //c.val += rng.rand_float() * 2.0 * sim.bias_map[*i].energy_scalar;
                 }
                 if c.val >= simulation::MAX_ENERGY {
                     let dir = rng.rand_range(0..4);
@@ -156,7 +149,7 @@ fn update(sim: &mut Simulation, buf: &mut [u32], rng: &mut oorandom::Rand32, run
         
         swap(c, &mut grid[*i]);
     }
-    println!("plants: {} | +{}", count_plant, (count_plant as i64) - (sim.count_plant as i64));
+    //println!("plants: {} | +{}", count_plant, (count_plant as i64) - (sim.count_plant as i64));
     
     sim.count_plant = count_plant;
     

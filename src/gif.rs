@@ -19,11 +19,11 @@ pub(crate) fn png_encoder() -> PngEncoder<File> {
     PngEncoder::new_with_quality(file, CompressionType::Fast, FilterType::NoFilter)
 }
 
-pub struct PngSequencer {
+/*pub struct PngSequencer {
     pub directory: String,
     count: u16,
 }
-/*impl PngSequencer {
+impl PngSequencer {
     pub fn new() -> Self {
     let dt = Utc::now().format("%Y-%m-%d_%H-%M-%S").to_string();
         std::fs::DirBuilder::new().recursive(true).create(format!("gifs-raw/{}/", dt)).unwrap();
