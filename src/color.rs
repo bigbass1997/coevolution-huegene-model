@@ -2,25 +2,39 @@
 
 use image::Rgba;
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Default, Debug, Copy, Clone)]
 pub struct Color {
     pub r: f32,
     pub g: f32,
     pub b: f32,
 }
 impl Color {
-    pub fn new() -> Self {
-        Color {
-            r: 0.0,
-            g: 0.0,
-            b: 0.0,
-        }
+    pub fn with_rgb(r: f32, g: f32, b: f32) -> Self {
+        Color { r, g, b }
     }
     
-    pub fn set(&mut self, r: f32, g: f32, b: f32) {
+    pub fn set_rgb(&mut self, r: f32, g: f32, b: f32) -> &mut Self {
         self.r = r;
         self.g = g;
         self.b = b;
+        
+        self
+    }
+    
+    pub fn set_color(&mut self, other: &Self) -> &mut Self {
+        self.r = other.r;
+        self.g = other.g;
+        self.b = other.b;
+        
+        self
+    }
+    
+    pub fn clamp(&mut self, min: f32, max: f32) -> &mut Self {
+        self.r = self.r.clamp(min, max);
+        self.g = self.g.clamp(min, max);
+        self.b = self.b.clamp(min, max);
+        
+        self
     }
     
     pub fn to_u32(&self) -> u32 {
